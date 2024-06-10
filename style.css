@@ -64,6 +64,16 @@ display: flex;
 span{
   color: #707070;
 }
+
+.blink{
+  opacity:0;
+  animation: blink 1s ease infinite;
+}
+@keyframes blink{
+  50%{ 
+    opacity: 1; 
+  }
+}
 .correct{
   color:white;
 }
