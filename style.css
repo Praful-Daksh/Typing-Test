@@ -20,6 +20,24 @@
   background-color:#303249;
   color:white;
 }
+.result{
+width:80%;
+  border-radius:5px;
+  background-color:#303249;
+  color:white;
+}
+.result h1{
+display:flex;
+  justify-content: center;
+  align-items: center;
+  margin:10px 0px;
+}
+.result p{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin:10px 0px;
+}
 .paragraph{
   width:90%;
   margin:10px auto;
@@ -40,12 +58,27 @@
  color:white;
  padding-left:3px;
 }
-#button{
+#button {
   background-color:#5BCD78;
   color:white;
   border:none;
   border-radius:3px;
 }
+.result-btn{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.button{
+background-color:#5BCD78;
+  color:white;
+  border:none;
+  border-radius:3px;
+  width:30%;
+  height:1.5rem; 
+  margin-bottom:5px;
+}
+
 .widgets{
   width:70%;
   color: #E96C1C;
@@ -54,7 +87,7 @@ display: flex;
   justify-content: space-between;
 }
 .widgets ul{
-  display: flex;
+  display:flex;
   align-items: center;
   justify-content: space-between;
 }
@@ -64,14 +97,13 @@ display: flex;
 span{
   color: #707070;
 }
-
-.blink{
+.blink {
   opacity:0;
-  animation: blink 1s ease infinite;
+  animation:blink .5s ease infinite;  
 }
 @keyframes blink{
   50%{ 
-    opacity: 1; 
+    opacity: 1;
   }
 }
 .correct{
