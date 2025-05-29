@@ -15,28 +15,17 @@ const paragraphs = [
   "Blockchain technology underpins cryptocurrencies like Bitcoin, ensuring secure and transparent transactions. By eliminating intermediaries, blockchain promotes trust and efficiency in various sectors, from finance to supply chain management.",
   "Brazil, known for its Amazon rainforest, faces significant deforestation challenges. Conservation efforts are critical to preserving its biodiversity, which plays a vital role in global ecological balance and climate regulation.",
   "The geopolitical ramifications of emerging technologies necessitate astute policy formulations. Nations must navigate the complexities of digital sovereignty, cybersecurity, and ethical considerations to harness these innovations' benefits while mitigating potential adversities.",
-  // Easy paragraphs (60-80 words)
   "Technology is evolving rapidly, changing the way we live and work. Innovations like artificial intelligence and blockchain are transforming industries. Praful recently explored a new AI tool that can predict weather patterns with high accuracy. This tool helps farmers plan their activities better, leading to increased crop yields and reduced losses.",
-  
   "Video games have become a major part of modern entertainment. Games like Fortnite and Minecraft attract millions of players worldwide. Praful enjoys playing these games with his friends, as they provide a fun way to relax and improve strategic thinking. The gaming industry continues to grow, with new titles released regularly.",
-  
   "Renewable energy sources, such as solar and wind power, are crucial for a sustainable future. Praful is passionate about green technology and recently installed solar panels at his home. This not only reduces his carbon footprint but also saves on electricity bills. More people are adopting renewable energy solutions to combat climate change.",
-  
   "Social media platforms like Instagram and TikTok are trending, with millions of users sharing their lives online. Praful uses these platforms to stay connected with friends and discover new trends. These platforms are not just for fun; they also provide opportunities for businesses to reach wider audiences through targeted advertising.",
-  
   "The healthcare sector is benefiting from technological advancements. Telemedicine allows patients to consult doctors remotely, improving access to medical care. Praful recently used a telemedicine service to get a prescription refill without visiting the clinic. This convenience is especially valuable during the ongoing pandemic, reducing the risk of exposure.",
-  
   "The popularity of esports has skyrocketed in recent years. Competitive gaming tournaments draw large audiences, both online and in-person. Praful follows several esports teams and enjoys watching their matches. The industry offers career opportunities for players, coaches, and commentators, making it a viable profession for gaming enthusiasts.",
-  
   "Electric vehicles (EVs) are gaining traction as a sustainable transportation option. Praful is considering purchasing an EV to reduce his carbon footprint and save on fuel costs. With advancements in battery technology, EVs offer longer ranges and faster charging times, making them more practical for everyday use.",
-  
   "Artificial intelligence is being integrated into various applications, from virtual assistants to smart home devices. Praful recently set up a smart home system that uses AI to control lighting, temperature, and security. This system learns his preferences over time, providing a personalized and efficient living experience.",
-  
   "Online learning platforms have become essential, especially during the pandemic. Praful enrolled in a coding course on one such platform to enhance his skills. These platforms offer a wide range of courses, from basic to advanced levels, enabling learners to acquire new knowledge and improve their career prospects.",
-  
   "Augmented reality (AR) is creating immersive experiences in gaming, education, and retail. Praful tried an AR app that overlays digital information on the real world through his smartphone. This technology is being used to enhance learning experiences, provide interactive product demos, and create engaging marketing campaigns.",
-  
-  // Medium paragraphs (50 words)
+
   "The rise of 5G technology promises faster internet speeds and improved connectivity. Praful is excited about the potential applications, such as smart cities and autonomous vehicles. This technology will enable seamless communication between devices, leading to innovations in various sectors and enhancing overall quality of life.",
   
   "The gig economy is growing, with more people opting for freelance work. Praful recently started offering his graphic design services online, enjoying the flexibility it offers. This shift in employment patterns is driven by technology, allowing individuals to work remotely and connect with clients globally.",
