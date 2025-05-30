@@ -1,6 +1,6 @@
 var paragraphText = document.querySelector('#para');
 var inputArea = document.querySelector('#text');
-var HalfMin = document.querySelector('#halfMin'); 
+var HalfMin = document.querySelector('#halfMin');
 var Min = document.querySelector('#Min');
 var quarter = document.querySelector('#quarter');
 var Mistakes = document.querySelector('#mistakes');
@@ -14,33 +14,97 @@ var activeCount = HalfMin;
 var letters;
 let letterIndex = 0;
 let divide = 0.5;
+let currentWordStart = 0;
+let canBackspace = true;
 
 function randomPara() {
     paragraphText.innerHTML = '';
-    
-    var indexRandom = Math.round(Math.random() * paragraphs.length );
+
+    var indexRandom = Math.round(Math.random() * paragraphs.length);
     letters = paragraphs[indexRandom].split("");
     var fragment = document.createDocumentFragment();
-    
+
     for (let i = 0, len = letters.length; i < len; i++) {
         let spanTag = document.createElement('span');
         spanTag.textContent = letters[i];
         fragment.appendChild(spanTag);
     }
     paragraphText.appendChild(fragment);
-  
+}
+
+// Find the start of current word
+function findCurrentWordStart(index) {
+    while (index > 0 && letters[index - 1] !== ' ') {
+        index--;
+    }
+    return index;
+}
+
+// Find the end of current word
+function findCurrentWordEnd(index) {
+    while (index < letters.length && letters[index] !== ' ') {
+        index++;
+    }
+    return index;
+}
+
+// Check if current word is completed correctly
+function isCurrentWordComplete() {
+    let wordEnd = findCurrentWordEnd(currentWordStart);
+    let wordLength = wordEnd - currentWordStart;
+    
+    // Check if we've typed all letters of the current word
+    if (letterIndex < wordEnd) {
+        return false;
+    }
+    
+    // Check if all letters in the word are correct
+    for (let i = currentWordStart; i < wordEnd; i++) {
+        if (typingLetters[i] && typingLetters[i].classList.contains('wrong')) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+// Move to next word
+function moveToNextWord() {
+    // Find the next word start (skip spaces)
+    let nextWordStart = letterIndex;
+    while (nextWordStart < letters.length && letters[nextWordStart] === ' ') {
+        // Mark spaces as correct
+        if (typingLetters[nextWordStart]) {
+            typingLetters[nextWordStart].classList.remove('wrong');
+            typingLetters[nextWordStart].classList.add('correct');
+        }
+        nextWordStart++;
+    }
+    
+    letterIndex = nextWordStart;
+    currentWordStart = nextWordStart;
+    canBackspace = false; // Disable backspace until user starts typing new word
+    
+    // Update blinking cursor
+    for (let span of typingLetters) {
+        span.classList.remove('blink');
+    }
+    if (typingLetters[letterIndex]) {
+        typingLetters[letterIndex].classList.add('blink');
+    }
 }
 
 // when user starts typing
 function startTyping(e) {
     typingLetters = paragraphText.children;
-    
+
     for (let span of typingLetters) {
         span.classList.remove('blink');
     }
-    
+
     if (e && e.key === "Backspace") {
-        if (letterIndex > 0) {
+        // Only allow backspace if we can backspace and we're not at word boundary
+        if (canBackspace && letterIndex > currentWordStart) {
             letterIndex--;
             if (typingLetters[letterIndex].classList.contains('wrong')) {
                 errors--;
@@ -49,8 +113,10 @@ function startTyping(e) {
             typingLetters[letterIndex].classList.add('blink');
         }
     } else {
-        let typedLetter = inputArea.value[letterIndex];
+        let typedLetter = inputArea.value[letterIndex - currentWordStart];
         if (typedLetter != null && letterIndex < typingLetters.length) {
+            canBackspace = true; // Enable backspace since user is typing
+            
             if (typingLetters[letterIndex].textContent === typedLetter) {
                 if (typingLetters[letterIndex].classList.contains('wrong')) {
                     errors--;
@@ -94,26 +160,28 @@ function clearRemain() {
         quarter.className = 'display';
     }
     if (activeCount === Min) {
-        HalfMin.className = 'display'; 
+        HalfMin.className = 'display';
         quarter.className = 'display';
     }
     if (activeCount === quarter) {
         Min.className = 'display';
-        HalfMin.className = 'display'; 
+        HalfMin.className = 'display';
     }
 }
 
 function restart() {
     errors = 0;
     letterIndex = 0;
+    currentWordStart = 0;
+    canBackspace = true;
     inputArea.disabled = false;
     inputArea.value = '';
-    
+
     if (countdown) {
         clearInterval(countdown);
         countdown = null;
     }
-    
+
     if (activeCount === HalfMin) {
         time = 30;
     } else if (activeCount === Min) {
@@ -121,14 +189,14 @@ function restart() {
     } else if (activeCount === quarter) {
         time = 15;
     }
-    
+
     activeCount.textContent = time;
     Mistakes.textContent = 0;
-    
+
     document.querySelector('.widgets').classList.remove('display');
     document.querySelector('.main').classList.remove('display');
     document.querySelector('.result').classList.add('display');
-    
+
     randomPara();
 }
 
@@ -136,13 +204,23 @@ function result() {
     document.querySelector('.widgets').classList.add('display');
     document.querySelector('.main').classList.add('display');
     document.querySelector('.result').classList.remove('display');
+
+    // Calculate correct characters (total typed characters minus errors)
+    var totalCharactersTyped = letterIndex;
+    var correctCharacters = totalCharactersTyped - errors;
     
-    var charactersTyped = letterIndex - errors;
-    var wpm = Math.round(charactersTyped / 5 / divide);
+    // Calculate Gross WPM (includes errors)
+    var grossWPM = Math.round((totalCharactersTyped / 5) / divide);
     
-    document.querySelector('#char').textContent = `Characters Typed: ${charactersTyped}`;
+    // Calculate Net WPM (excludes errors) - This is the standard preferred method
+    var netWPM = Math.round((correctCharacters / 5) / divide);
+    
+    // Calculate accuracy percentage
+    var accuracy = totalCharactersTyped > 0 ? Math.round((correctCharacters / totalCharactersTyped) * 100) : 100;
+
+    document.querySelector('#char').textContent = `Characters Typed: ${totalCharactersTyped} (${correctCharacters} correct)`;
     document.querySelector('#wrong-char').textContent = `Mistakes: ${errors}`;
-    document.querySelector('#speed').textContent = `${wpm} WPM`; // Fixed: added space before WPM
+    document.querySelector('#speed').textContent = `${netWPM} WPM (${accuracy}% accuracy)`;
 }
 
 inputArea.addEventListener("input", (e) => {
@@ -155,27 +233,62 @@ inputArea.addEventListener('keydown', (e) => {
     if (!countdown && (e.key.length === 1 || e.key === "Backspace")) {
         startTimer();
     }
-    
-    if (e.key === "Backspace") {
+
+    // Handle space key for word completion
+    if (e.key === " ") {
         e.preventDefault();
         
-        if (letterIndex > 0) {
-            letterIndex--;
+        // Check if current word is complete and correct
+        if (isCurrentWordComplete()) {
+            inputArea.value = ''; // Clear input
+            moveToNextWord(); // Move to next word
+        } else {
+            // Word is not complete - mark remaining letters as wrong and move to next word
+            let wordEnd = findCurrentWordEnd(currentWordStart);
             
+            // Mark all remaining letters in the current word as wrong
+            for (let i = letterIndex; i < wordEnd; i++) {
+                if (typingLetters[i] && !typingLetters[i].classList.contains('wrong')) {
+                    typingLetters[i].classList.add('wrong');
+                    errors++;
+                }
+            }
+            
+            // Move letterIndex to end of current word
+            letterIndex = wordEnd;
+            
+            inputArea.value = ''; // Clear input
+            moveToNextWord(); // Move to next word
+            
+            // Update mistakes display
+            Mistakes.textContent = errors;
+        }
+        return;
+    }
+
+    // Handle backspace
+    if (e.key === "Backspace") {
+        e.preventDefault();
+
+        // Only allow backspace if we can backspace and we're not at word start
+        if (canBackspace && letterIndex > currentWordStart) {
+            letterIndex--;
+
             if (paragraphText.children[letterIndex]) {
                 let wasWrong = paragraphText.children[letterIndex].classList.contains('wrong');
                 if (wasWrong) {
                     errors--;
                 }
                 paragraphText.children[letterIndex].classList.remove('correct', 'wrong');
-                
+
                 for (let span of paragraphText.children) {
                     span.classList.remove('blink');
                 }
-                
+
                 paragraphText.children[letterIndex].classList.add('blink');
-                
-                inputArea.value = inputArea.value.substring(0, letterIndex);
+
+                // Update input value to match current position within word
+                inputArea.value = inputArea.value.substring(0, letterIndex - currentWordStart);
 
                 Mistakes.textContent = errors;
             }
@@ -184,20 +297,20 @@ inputArea.addEventListener('keydown', (e) => {
 });
 
 HalfMin.addEventListener('click', () => {
-    if (countdown) return; 
-    
+    if (countdown) return;
+
     activeCount = HalfMin;
     time = 30;
     divide = 0.5;
     HalfMin.className = 'time-active';
     Min.classList.remove('time-active');
     quarter.classList.remove('time-active');
-    HalfMin.textContent = time; 
+    HalfMin.textContent = time;
 });
 
 Min.addEventListener('click', () => {
-    if (countdown) return; 
-    
+    if (countdown) return;
+
     activeCount = Min;
     time = 60;
     divide = 1;
@@ -208,15 +321,15 @@ Min.addEventListener('click', () => {
 });
 
 quarter.addEventListener('click', () => {
-    if (countdown) return; 
-    
+    if (countdown) return;
+
     activeCount = quarter;
     time = 15;
     divide = 0.25;
     HalfMin.classList.remove('time-active');
     Min.classList.remove('time-active');
     quarter.className = 'time-active';
-    quarter.textContent = time; 
+    quarter.textContent = time;
 });
 
 button.addEventListener('click', restart);
