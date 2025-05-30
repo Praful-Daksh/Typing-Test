@@ -3,8 +3,7 @@
 **Typing-Test** is a web-based application designed to help users measure and improve their typing speed and accuracy. The app presents users with a random paragraph and tracks their performance as they type, providing instant feedback on mistakes and calculating words per minute (WPM).
 
 
-It is live at (hear)[https://Praful-Daksh.github.io/Typing-Test]
-
+It is live at [here](https://Praful-Daksh.github.io/Typing-Test)
 ## How It Works
 
 - **Choose a Time Limit:**  
